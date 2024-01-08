@@ -1,0 +1,11 @@
+{
+    "name": "Basic Info site",
+    "version": "1.0.0",
+    "description": "Basic Info site",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "MaliciousBunny"
+
+}
