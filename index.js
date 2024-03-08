@@ -1,44 +1,43 @@
-const url = require('node:url');
-const http = require('node:http');
-const fs = require('node:fs');
+const express = require('express')
+const path = require('path')
+const app = express()
+const port = 3000
 
-const headers = {
-    'Content-Type': 'text/html'
 
-}
-
-const readStream = fs.createReadStream('./index.html');
-
-const server = http.createServer((req, res) => {
-    const path = url.parse(req.url).pathname;
-    if (path === '/') {
-        res.writeHead(200, headers);
-        const data = fs.readFileSync('./index.html');
-        res.write(data);
-
-        
-
-        res.end();
-    } else if (path === '/about') {
-        res.writeHead(200, headers);
-        const data = fs.readFileSync('./about.html');
-        res.write(data);
-        res.end();
-     } else if (path === '/contact-me') {
-        res.writeHead(200, headers);
-        const data = fs.readFileSync('./contact-me.html');
-        res.write(data);
-        res.end();
-    
-    } else {
-        res.writeHead(404, headers);
-        const data = fs.readFileSync('./404.html');
-        res.write(data);
-        
-        res.end();
+app.get('/', (req, res) => {
+    try{
+        res.sendFile(path.join(__dirname, '/index.html'));
     }
+    catch(err){
+        console.log(err);
+    }
+
+})
+app.get('/about', (req, res) => {
+   try{
+    res.sendFile(path.join(__dirname, '/about.html'));
+   }
+    catch(err){
+         console.log(err);
+    }
+
+})
+app.get('/contact-me', (req, res) => {
+    try{
+        res.sendFile(path.join(__dirname, '/contact-me.html'));
+       
+    }
+    catch(err){
+        console.log(err);
+    }
+
+})
+
+app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, '/404.html'));
 });
 
-server.listen(8080, () => {
-    console.log('Server is running on http://localhost:8080/');
-})
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
